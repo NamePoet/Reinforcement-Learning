@@ -75,13 +75,13 @@ def train_cartpole():
     # 设置渲染帧率
     env.metadata['video.frames_per_second'] = 165
 
-    episodes = 5000
+    episodes = 500
     # total_rewards = []
 
     for episode in range(episodes):
         state = env.reset()
         total_reward = 0
-        max_steps = 5000     # 500
+        max_steps = 500    # 500
 
         for step in range(max_steps):
             # 选择动作并执行
@@ -107,15 +107,56 @@ def train_cartpole():
             print(f"Episode: {episode + 1}, Average Reward (Last 50 episodes): {avg_reward}")
 
     env.close()
+    return agent, state_size, num_actions   # 返回训练后的agent以及state_size和num_actions
 
 
 # 开始训练
-train_cartpole()
+# train_cartpole()
 
 
+def test_cartpole(agent, state_size, num_actions, max_steps=500):
+    env = gym.make('CartPole-v1')
+
+    # 设置渲染帧率
+    env.metadata['video.frames_per_second'] = 165
+
+    episodes = 800 # 进行10个测试
+    durations = []
+
+    for episode in range(episodes):
+        state = env.reset()
+        total_reward = 0
+
+        for step in range(max_steps):
+            # 选择动作并执行
+            action = agent.select_action(state)
+            next_state, reward, done, _ = env.step(action)
+
+            total_reward += reward
+            state = next_state
+
+            if done:
+                break
+
+            # env.render()  # 使用env.render()展示CartPole状态
+
+        durations.append(step + 1)  # 记录每个episode的持续时间
+
+    env.close()
+
+    return durations
+
+
+# 在训练后调用此函数进行测试
+trained_agent, state_size, num_actions = train_cartpole()
 # 绘制奖励优化曲线
 plt.plot(total_rewards)
 plt.xlabel('Episode')
 plt.ylabel('Total Reward')
 plt.title('CartPole-v1 Training')
 plt.show()
+durations = test_cartpole(trained_agent, state_size, num_actions)
+# 打印测试结果
+avg_duration = np.mean(durations)
+print(f"Average Duration over 800 episodes: {avg_duration} steps")
+
