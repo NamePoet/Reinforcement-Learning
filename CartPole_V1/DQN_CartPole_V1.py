@@ -34,7 +34,7 @@ class DQNAgent:
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-3)
         self.gamma = 0.99
         self.epsilon = 1.0
-        self.epsilon_decay = 0.995
+        self.epsilon_decay = 0.990      #
         self.epsilon_min = 0.01
 
     def select_action(self, state):
@@ -75,7 +75,7 @@ def train_cartpole():
     # 设置渲染帧率
     env.metadata['video.frames_per_second'] = 165
 
-    episodes = 500
+    episodes = 1000
     # total_rewards = []
 
     for episode in range(episodes):
@@ -158,5 +158,5 @@ plt.show()
 durations = test_cartpole(trained_agent, state_size, num_actions)
 # 打印测试结果
 avg_duration = np.mean(durations)
-print(f"Average Duration over 800 episodes: {avg_duration} steps")
+print(f"Average Duration over 1000 episodes: {avg_duration} steps")
 
