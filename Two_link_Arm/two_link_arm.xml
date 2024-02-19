@@ -1,0 +1,21 @@
+<mujoco model="two_link_arm">
+    <compiler angle="radian" coordinate="global"/>
+    <option timestep="0.01" gravity="0 0 -9.81"/>
+    <worldbody>
+        <light pos="0 0 10" dir="0 0 -1" diffuse="1 1 1" specular=".1 .1 .1"/>
+        <camera name="track" pos="0 -5 5" xyaxes="1 0 0 0 1 1.5" fovy="40"/>
+        <geom name="floor" pos="0 0 0" size="10 10 0.1" rgba=".8 .9 .8 1" type="plane"/>
+        <body name="link1" pos="0 0 0">
+            <joint name="joint1" axis="0 0 1"/>
+            <geom name="link1_geom" pos="0.5 0 0" size="1 0.1 0.1" rgba="0 0 1 1" type="box" density="1.0"/>
+            <body name="link2" pos="1 0 0">
+                <joint name="joint2" axis="0 0 1"/>
+                <geom name="link2_geom" pos="0.5 0 0" size="1 0.1 0.1" rgba="1 0 0 1" type="box" density="1.0"/>
+            </body>
+        </body>
+    </worldbody>
+    <actuator>
+        <motor joint="joint1" ctrlrange="-1.0 1.0"/>
+        <motor joint="joint2" ctrlrange="-1.0 1.0"/>
+    </actuator>
+</mujoco>
